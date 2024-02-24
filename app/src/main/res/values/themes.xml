@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.Ipon" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#121212</item>
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:navigationBarColor">#121212</item>
+        <item name="fontFamily">@font/sf_pro</item>
+    </style>
+
+    <style name="Theme.Ipon" parent="Base.Theme.Ipon" />
+</resources>
