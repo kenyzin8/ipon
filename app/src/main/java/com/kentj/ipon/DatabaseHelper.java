@@ -151,8 +151,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Ipon> allIpon = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Use ORDER BY to sort by COLUMN_ID in descending order
-        Cursor cursor = db.query(TABLE_IPON, null, null, null, null, null, COLUMN_ID + " DESC");
+        Cursor cursor = db.query(TABLE_IPON, null, null, null, null, null,
+                COLUMN_DEADLINE + " IS NULL ASC, " + COLUMN_DEADLINE + " ASC");
 
         if (cursor.moveToFirst()) {
             do {
@@ -246,7 +246,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_HULOG, null, COLUMN_IPON_ID + " = ?", new String[]{String.valueOf(ipon_id)},
-                null, null, COLUMN_ID + " DESC");
+                null, null, COLUMN_DATE_ADDED + " DESC");
 
         if (cursor.moveToFirst()) {
             do {

@@ -69,8 +69,8 @@ public class IponAdapter extends BaseAdapter {
         TextView tvBalance = convertView.findViewById(R.id.tvBalance);
 
         Ipon ipon = getItem(position);
-
-        if(ipon.getDeadline().equals("00/00/0000")){
+        System.out.println(ipon.getDeadline());
+        if(ipon.getDeadline() == null){
             tvDeadline.setText("No Deadline");
         }
         else{

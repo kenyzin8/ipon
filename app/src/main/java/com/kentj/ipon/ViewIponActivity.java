@@ -68,7 +68,7 @@ public class ViewIponActivity extends AppCompatActivity {
 
         tvPurposeIp.setText(ipon.getPurpose());
 
-        if(ipon.getDeadline().equals("00/00/0000")){
+        if(ipon.getDeadline() == null){
             tvIponDeadline.setText("No Deadline");
         }
         else{
@@ -161,7 +161,7 @@ public class ViewIponActivity extends AppCompatActivity {
         etUpdatePurpose.setText(ipon.getPurpose());
         etUpdateGoal.setText(String.valueOf(ipon.getGoal_amount()));
 
-        if(ipon.getDeadline().equals("00/00/0000")){
+        if(ipon.getDeadline() == null){
             etUpdateDeadline.setText("");
             etUpdateDeadline.setEnabled(false);
             cbNoDeadline.setChecked(true);
@@ -200,7 +200,7 @@ public class ViewIponActivity extends AppCompatActivity {
                 String deadline = "";
 
                 if(etUpdateDeadline.getText().toString().isEmpty()){
-                    deadline = "00/00/0000";
+                    deadline = null;
                 }
                 else{
                     deadline = etUpdateDeadline.getText().toString();
@@ -220,7 +220,7 @@ public class ViewIponActivity extends AppCompatActivity {
 
                 tvPurposeIp.setText(etUpdatePurpose.getText().toString());
 
-                if(deadline == "00/00/0000"){
+                if(deadline == null){
                     tvIponDeadline.setText("No Deadline");
                 }
                 else{
@@ -248,7 +248,7 @@ public class ViewIponActivity extends AppCompatActivity {
                     etUpdateDeadline.setEnabled(false);
                 }
                 else{
-                    if(ipon.getDeadline().equals("00/00/0000")){
+                    if(ipon.getDeadline() == null){
                         etUpdateDeadline.setText("");
                     }
                     else{
@@ -308,8 +308,7 @@ public class ViewIponActivity extends AppCompatActivity {
 
                 hulog.setId(Integer.parseInt(String.valueOf(databaseHelper.insert_hulog(hulog))));
 
-                hulogData.add(0, hulog);
-                hulogAdapter.notifyDataSetChanged();
+                loadHulogData(ipon_id);
 
                 updateTextViews();
 

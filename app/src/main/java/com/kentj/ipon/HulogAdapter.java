@@ -83,7 +83,7 @@ public class HulogAdapter extends BaseAdapter {
                 TextView tvConfirmationMessage = dialogView.findViewById(R.id.tvConfirmationMessage);
                 TextView tvConfirmationPurpose = dialogView.findViewById(R.id.tvConfirmationPurpose);
                 tvConfirmationMessage.setText("Are you sure you want to delete this item?");
-                tvConfirmationPurpose.setText(hulog.getSource());
+                tvConfirmationPurpose.setText(hulog.getSource() + " · ₱" + Utility.intcomma(String.valueOf(hulog.getAmount())));
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

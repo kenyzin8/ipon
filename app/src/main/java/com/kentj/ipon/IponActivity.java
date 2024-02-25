@@ -26,8 +26,13 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -172,7 +177,7 @@ public class IponActivity extends AppCompatActivity {
                 String deadline = "";
 
                 if(etDeadline.getText().toString().isEmpty()){
-                    deadline = "00/00/0000";
+                    deadline = null;
                 }
                 else{
                     deadline = etDeadline.getText().toString();
@@ -183,8 +188,7 @@ public class IponActivity extends AppCompatActivity {
 
                 ip.setId(Integer.parseInt(String.valueOf(databaseHelper.insert_ipon(ip))));
 
-                iponData.add(0, ip);
-                iponAdapter.notifyDataSetChanged();
+                loadIponData();
 
                 bottomSheetDialog.dismiss();
             }
