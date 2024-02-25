@@ -234,13 +234,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public void delete_hulog(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_HULOG, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
     @SuppressLint("Range")
     public List<Hulog> get_all_hulog(int ipon_id) {
         List<Hulog> allHulog = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_HULOG, null, COLUMN_IPON_ID + " = ?", new String[]{String.valueOf(ipon_id)},
-                null, null, COLUMN_DATE_ADDED + " DESC");
+                null, null, COLUMN_ID + " DESC");
 
         if (cursor.moveToFirst()) {
             do {

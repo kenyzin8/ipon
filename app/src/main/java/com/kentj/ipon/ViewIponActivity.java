@@ -2,12 +2,15 @@ package com.kentj.ipon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,16 +29,14 @@ import java.util.Locale;
 
 public class ViewIponActivity extends AppCompatActivity {
 
-    private TextView tvHakdog, tvIponDeadline, tvHulogTotal, tvHulogGoal, tvNoHulog;
+    private TextView tvPurposeIp, tvIponDeadline, tvHulogGoal, tvNoHulog, tvHulogTotal, tvHulogBalance;
     private DatabaseHelper databaseHelper;
-    private ImageView btnBack, btnAddhulog;
-
+    private ImageView btnBack, btnAddhulog, btnSettings;
     private List<Hulog> hulogData;
     private HulogAdapter hulogAdapter;
     private ListView hulogList;
-
-    private EditText etSource, etAmount, etDate;
-
+    private EditText etSource, etAmount, etDate, etUpdatePurpose, etUpdateGoal, etUpdateDeadline;
+    private CheckBox cbNoDeadline;
     private int IPON_ID;
 
     @Override
@@ -43,7 +44,7 @@ public class ViewIponActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_ipon);
 
-        tvHakdog = findViewById(R.id.tvPurposeIp);
+        tvPurposeIp = findViewById(R.id.tvPurposeIp);
         tvIponDeadline = findViewById(R.id.tvIponDeadline);
         tvHulogTotal = findViewById(R.id.tvHulogTotal);
         tvHulogGoal = findViewById(R.id.tvHulogGoal);
@@ -52,9 +53,11 @@ public class ViewIponActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnAddhulog = findViewById(R.id.btnAddhulog);
         hulogList = findViewById(R.id.hulogList);
+        tvHulogBalance = findViewById(R.id.tvHulogBalance);
+        btnSettings = findViewById(R.id.btnSettings);
 
         hulogData = new ArrayList<>();
-        hulogAdapter = new HulogAdapter(this, hulogData);
+        hulogAdapter = new HulogAdapter(this, hulogData, this);
         hulogList.setAdapter(hulogAdapter);
 
         Intent intent = getIntent();
@@ -63,10 +66,20 @@ public class ViewIponActivity extends AppCompatActivity {
 
         Ipon ipon = databaseHelper.get_ipon(id);
 
-        tvHakdog.setText(ipon.getPurpose());
-        tvIponDeadline.setText(Utility.convertDate(ipon.getDeadline()));
+        tvPurposeIp.setText(ipon.getPurpose());
+
+        if(ipon.getDeadline().equals("00/00/0000")){
+            tvIponDeadline.setText("No Deadline");
+        }
+        else{
+            tvIponDeadline.setText(Utility.convertDate(ipon.getDeadline()));
+        }
+
         tvHulogTotal.setText("₱" + Utility.intcomma(String.valueOf(databaseHelper.getTotalHulog(id))));
         tvHulogGoal.setText("₱" + Utility.intcomma(String.valueOf(ipon.getGoal_amount())));
+
+        double balance = ipon.getGoal_amount() - databaseHelper.getTotalHulog(id);
+        tvHulogBalance.setText("₱" + Utility.intcomma(String.valueOf(balance)));
 
         loadHulogData(id);
 
@@ -83,11 +96,37 @@ public class ViewIponActivity extends AppCompatActivity {
                 showAddHulogDialog(id);
             }
         });
+
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ipon ipon = databaseHelper.get_ipon(id);
+                showUpdateIponDialog(ipon);
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void showUpdateDatePickerDialog(View view){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", month + 1, day, year);
+                etUpdateDeadline.setText(formattedDate);
+            }
+        };
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_DARK, dateSetListener, year, month, day);
+        datePickerDialog.show();
     }
 
     public void showDatePickerDialogHulog(View view) {
@@ -103,9 +142,117 @@ public class ViewIponActivity extends AppCompatActivity {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_DARK, dateSetListener, year, month, day);
         datePickerDialog.show();
+    }
+
+    private void showUpdateIponDialog(Ipon ipon){
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.update_ipon_dialog, null);
+
+        etUpdatePurpose = dialogView.findViewById(R.id.etUpdatePurpose);
+        etUpdateGoal = dialogView.findViewById(R.id.etUpdateGoalAmount);
+        etUpdateDeadline = dialogView.findViewById(R.id.etUpdateDeadline);
+        cbNoDeadline = dialogView.findViewById(R.id.cbNoDeadline);
+
+        Button btnSave = dialogView.findViewById(R.id.btnUpdateSave);
+        Button btnCancel = dialogView.findViewById(R.id.btnUpdateCancel);
+
+        etUpdatePurpose.setText(ipon.getPurpose());
+        etUpdateGoal.setText(String.valueOf(ipon.getGoal_amount()));
+
+        if(ipon.getDeadline().equals("00/00/0000")){
+            etUpdateDeadline.setText("");
+            etUpdateDeadline.setEnabled(false);
+            cbNoDeadline.setChecked(true);
+        }
+        else{
+            etUpdateDeadline.setText(ipon.getDeadline());
+            etUpdateDeadline.setEnabled(true);
+            cbNoDeadline.setChecked(false);
+        }
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(etUpdatePurpose.getText().toString().isEmpty() || etUpdateGoal.getText().toString().isEmpty()){
+                    return;
+                }
+
+                if(!cbNoDeadline.isChecked()){
+                    if(etUpdateDeadline.getText().toString().isEmpty()){
+                        return;
+                    }
+                }
+
+                Ipon ipon = new Ipon();
+                ipon.setId(IPON_ID);
+                ipon.setPurpose(etUpdatePurpose.getText().toString());
+                ipon.setGoal_amount(Double.parseDouble(etUpdateGoal.getText().toString()));
+
+                String deadline = "";
+
+                if(etUpdateDeadline.getText().toString().isEmpty()){
+                    deadline = "00/00/0000";
+                }
+                else{
+                    deadline = etUpdateDeadline.getText().toString();
+                }
+
+                ipon.setDeadline(deadline);
+
+                Date currentDate = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+                String formattedDate = dateFormat.format(currentDate);
+
+                ipon.setDate_added(formattedDate);
+
+                databaseHelper.update_ipon(IPON_ID, ipon);
+
+                bottomSheetDialog.dismiss();
+
+                tvPurposeIp.setText(etUpdatePurpose.getText().toString());
+
+                if(deadline == "00/00/0000"){
+                    tvIponDeadline.setText("No Deadline");
+                }
+                else{
+                    tvIponDeadline.setText(Utility.convertDate(deadline));
+                }
+
+                tvHulogGoal.setText("₱" + Utility.intcomma(etUpdateGoal.getText().toString()));
+                updateTextViews();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        cbNoDeadline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    etUpdateDeadline.setText("");
+                    etUpdateDeadline.setEnabled(false);
+                }
+                else{
+                    if(ipon.getDeadline().equals("00/00/0000")){
+                        etUpdateDeadline.setText("");
+                    }
+                    else{
+                        etUpdateDeadline.setText(ipon.getDeadline());
+                    }
+                    etUpdateDeadline.setEnabled(true);
+                }
+            }
+        });
+
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
     }
 
     private void showAddHulogDialog(int ipon_id) {
@@ -136,17 +283,18 @@ public class ViewIponActivity extends AppCompatActivity {
                 Hulog hulog = new Hulog();
                 Ipon ipon = new Ipon();
                 ipon.setId(ipon_id);
+
                 hulog.setIpon(ipon);
                 hulog.setSource(etSource.getText().toString());
                 hulog.setAmount(Double.parseDouble(etAmount.getText().toString()));
                 hulog.setDate_added(etDate.getText().toString());
 
-                databaseHelper.insert_hulog(hulog);
+                hulog.setId(Integer.parseInt(String.valueOf(databaseHelper.insert_hulog(hulog))));
 
                 hulogData.add(0, hulog);
                 hulogAdapter.notifyDataSetChanged();
 
-                tvHulogTotal.setText("₱" + Utility.intcomma(String.valueOf(databaseHelper.getTotalHulog(IPON_ID))));
+                updateTextViews();
 
                 tvNoHulog.setVisibility(View.INVISIBLE);
 
@@ -174,5 +322,14 @@ public class ViewIponActivity extends AppCompatActivity {
         }
 
         hulogAdapter.notifyDataSetChanged();
+    }
+
+    public void updateTextViews(){
+        DatabaseHelper db = new DatabaseHelper(this);
+        Ipon ipon = db.get_ipon(IPON_ID);
+
+        tvHulogTotal.setText("₱" + Utility.intcomma(String.valueOf(db.getTotalHulog(IPON_ID))));
+        double balance = ipon.getGoal_amount() - db.getTotalHulog(IPON_ID);
+        tvHulogBalance.setText("₱" + Utility.intcomma(String.valueOf(balance)));
     }
 }

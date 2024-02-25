@@ -100,6 +100,7 @@
         android:text="Save"
         android:textColor="@color/black"
         app:cornerRadius="15px"
+        android:fontFamily="@font/sf_pro"
         app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
         app:layout_constraintEnd_toEndOf="@+id/tilDeadline"
         app:layout_constraintStart_toEndOf="@+id/btnCancel"
@@ -115,6 +116,7 @@
         android:text="Cancel"
         android:textColor="@color/black"
         app:cornerRadius="15px"
+        android:fontFamily="@font/sf_pro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tilDeadline"
         app:layout_constraintTop_toBottomOf="@+id/tilDeadline" />

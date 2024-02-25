@@ -11,15 +11,26 @@
         android:id="@+id/btnAddhulog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:padding="9dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvIponDeadline"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSettings"
         app:layout_constraintTop_toTopOf="@+id/tvPurposeIp"
         app:srcCompat="@drawable/ic_add_white" />
 
     <TextView
         android:id="@+id/tvHulogTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/sf_pro"
+        android:text="Total"
+        android:textColor="#BF4CAF50"
+        app:layout_constraintBottom_toTopOf="@+id/tvHulogBalance"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHulogBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -49,11 +60,24 @@
         android:layout_marginStart="32dp"
         android:fontFamily="@font/sf_pro"
         android:text="Total Saved"
-        android:textColor="@color/white"
+        android:textColor="#BEFFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvHulogTotal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvHulogTotal" />
+
+    <TextView
+        android:id="@+id/tvTotalSaved4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/sf_pro"
+        android:text="Total Needed"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHulogBalance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvHulogBalance" />
 
     <TextView
         android:id="@+id/tvTotalSaved2"
@@ -78,8 +102,10 @@
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/tvHulogGoal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvIponDeadline"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/hulog_list_item" />
 
     <TextView
@@ -100,7 +126,7 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:padding="9dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,4 +158,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvIponDeadline" />
+
+    <ImageView
+        android:id="@+id/btnSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:padding="9dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIponDeadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPurposeIp"
+        app:srcCompat="@drawable/ic_settings_white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -69,7 +70,6 @@ public class IponActivity extends AppCompatActivity {
 //            databaseHelper.insert_hulog(hulog);
 
         loadIponData();
-        tvTotal.setText("₱" + Utility.intcomma(String.valueOf(databaseHelper.get_all_ipon_amount())));
 
         btnAddIpon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,13 @@ public class IponActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadIponData();
+    }
+
     private void showAddIponDialog() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.add_ipon_dialog, null);
@@ -149,13 +156,14 @@ public class IponActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_DARK, dateSetListener, year, month, day);
         datePickerDialog.show();
     }
 
     private void loadIponData() {
         iponData.clear();
         iponData.addAll(databaseHelper.get_all_ipon());
+        tvTotal.setText("₱" + Utility.intcomma(String.valueOf(databaseHelper.get_all_ipon_amount())));
         iponAdapter.notifyDataSetChanged();
     }
 

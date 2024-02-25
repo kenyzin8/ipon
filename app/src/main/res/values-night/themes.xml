@@ -4,4 +4,9 @@
         <item name="android:statusBarColor">#121212</item>
         <item name="android:navigationBarColor">#121212</item>
     </style>
+
+    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:textColorSecondary">#FFFFFF</item>
+    </style>
 </resources>

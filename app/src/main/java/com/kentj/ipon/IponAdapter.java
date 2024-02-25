@@ -94,7 +94,6 @@ public class IponAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Ipon ipon = getItem(position);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_confirmation_dialog, null);

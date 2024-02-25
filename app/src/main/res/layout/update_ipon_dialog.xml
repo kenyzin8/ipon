@@ -9,13 +9,13 @@
     android:background="#121212">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilSource"
+        android:id="@+id/tilUpdatePurpose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:hint="Source"
+        android:hint="Purpose"
         app:boxStrokeColor="@color/box_stroke_colors"
         app:hintTextColor="@color/box_stroke_colors"
         android:textColorHint="#80FFFFFF"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etSource"
+            android:id="@+id/etUpdatePurpose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -35,22 +35,22 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilAmount"
+        android:id="@+id/tilUpdateGoalAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Amount"
+        android:hint="Goal Amount"
         app:boxStrokeColor="@color/box_stroke_colors"
         app:hintTextColor="@color/box_stroke_colors"
         android:textColorHint="#80FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilSource">
+        app:layout_constraintTop_toBottomOf="@+id/tilUpdatePurpose">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etAmount"
+            android:id="@+id/etUpdateGoalAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
@@ -61,22 +61,22 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilToday"
+        android:id="@+id/tilUpdateDeadline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Date"
+        android:hint="Deadline"
         app:boxStrokeColor="@color/box_stroke_colors"
         app:hintTextColor="@color/box_stroke_colors"
         android:textColorHint="#80FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilAmount">
+        app:layout_constraintTop_toBottomOf="@+id/tilUpdateGoalAmount">
 
         <EditText
-            android:id="@+id/etDate"
+            android:id="@+id/etUpdateDeadline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_calendar"
@@ -84,7 +84,7 @@
             android:drawableTint="#CDFFFFFF"
             android:focusable="false"
             android:inputType="none"
-            android:onClick="showDatePickerDialogHulog"
+            android:onClick="showUpdateDatePickerDialog"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:fontFamily="@font/sf_pro"/>
@@ -92,34 +92,34 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSaveHulog"
+        android:id="@+id/btnUpdateSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:backgroundTint="#4CAF50"
-        android:text="Save"
+        android:text="Update"
         android:textColor="@color/black"
         app:cornerRadius="15px"
         android:fontFamily="@font/sf_pro"
-        app:layout_constraintBottom_toBottomOf="@+id/btnCancelHulog"
-        app:layout_constraintEnd_toEndOf="@+id/tilToday"
-        app:layout_constraintStart_toEndOf="@+id/btnCancelHulog"
-        app:layout_constraintTop_toTopOf="@+id/btnCancelHulog" />
+        app:layout_constraintBottom_toBottomOf="@+id/btnUpdateCancel"
+        app:layout_constraintEnd_toEndOf="@+id/tilUpdateDeadline"
+        app:layout_constraintStart_toEndOf="@+id/btnUpdateCancel"
+        app:layout_constraintTop_toTopOf="@+id/btnUpdateCancel" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCancelHulog"
+        android:id="@+id/btnUpdateCancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="#F1F1F1"
+        android:fontFamily="@font/sf_pro"
         android:text="Cancel"
         android:textColor="@color/black"
         app:cornerRadius="15px"
-        android:fontFamily="@font/sf_pro"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tilToday"
-        app:layout_constraintTop_toBottomOf="@+id/tilToday" />
+        app:layout_constraintStart_toStartOf="@+id/tilUpdateDeadline"
+        app:layout_constraintTop_toBottomOf="@+id/cbNoDeadline" />
 
     <TextView
         android:id="@+id/textView4"
@@ -127,11 +127,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/sf_pro"
-        android:text="Add Hulog"
+        android:text="Update Ipon Plan"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/cbNoDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="No Deadline"
+        app:layout_constraintStart_toStartOf="@+id/tilUpdateDeadline"
+        app:layout_constraintTop_toBottomOf="@+id/tilUpdateDeadline"
+        android:fontFamily="@font/sf_pro"
+        android:textColor="@color/white"
+        android:theme="@style/checkBoxStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
