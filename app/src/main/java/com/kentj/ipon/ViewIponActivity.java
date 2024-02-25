@@ -175,12 +175,19 @@ public class ViewIponActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(etUpdatePurpose.getText().toString().isEmpty() || etUpdateGoal.getText().toString().isEmpty()){
+
+                if(etUpdatePurpose.getText().toString().isEmpty()){
+                    etUpdatePurpose.setError("Required Field");
+                    return;
+                }
+                else if(etUpdateGoal.getText().toString().isEmpty()){
+                    etUpdateGoal.setError("Required Field");
                     return;
                 }
 
                 if(!cbNoDeadline.isChecked()){
                     if(etUpdateDeadline.getText().toString().isEmpty()){
+                        etUpdateDeadline.setError("Required Field");
                         return;
                     }
                 }
@@ -235,6 +242,7 @@ public class ViewIponActivity extends AppCompatActivity {
         cbNoDeadline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                etUpdateDeadline.setError(null);
                 if(b){
                     etUpdateDeadline.setText("");
                     etUpdateDeadline.setEnabled(false);
@@ -276,7 +284,16 @@ public class ViewIponActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(etSource.getText().toString().isEmpty() || etSource.getText().toString().isEmpty() || etSource.getText().toString().isEmpty()){
+                if(etSource.getText().toString().isEmpty()){
+                    etSource.setError("Required Field");
+                    return;
+                }
+                else if(etAmount.getText().toString().isEmpty()){
+                    etAmount.setError("Required Field");
+                    return;
+                }
+                else if(etDate.getText().toString().isEmpty()){
+                    etDate.setError("Required Field");
                     return;
                 }
 

@@ -1,5 +1,6 @@
 package com.kentj.ipon;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -16,12 +17,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import es.dmoral.toasty.Toasty;
 
 public class IponActivity extends AppCompatActivity {
 
@@ -35,6 +45,7 @@ public class IponActivity extends AppCompatActivity {
     private EditText etGoalAmount;
     private EditText etDeadline;
     private TextView tvTotal;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,49 @@ public class IponActivity extends AppCompatActivity {
         iponList.setAdapter(iponAdapter);
 
         tvTotal = findViewById(R.id.tvTotal);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
 
 //        Ipon ipon = new Ipon();
 //        ipon.setPurpose("hakdog");
@@ -100,7 +154,12 @@ public class IponActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(etPurpose.getText().toString().isEmpty() || etGoalAmount.getText().toString().isEmpty()) {
+                if(etPurpose.getText().toString().isEmpty()){
+                    etPurpose.setError("Required Field");
+                    return;
+                }
+                else if(etGoalAmount.getText().toString().isEmpty()){
+                    etGoalAmount.setError("Required Field");
                     return;
                 }
 
